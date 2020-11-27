@@ -1,15 +1,25 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import Link from "next/link";
+import Layout from "@components/Layout";
+import { Row, Col } from "antd";
 
 const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+  <Layout title="首页">
+    <div className="main">
+      <img src="/logo.png" />
 
-export default IndexPage
+      <Row>
+        <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
+          Col
+        </Col>
+        <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
+          Col
+        </Col>
+        <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
+          Col
+        </Col>
+      </Row>
+    </div>
+  </Layout>
+);
+
+export default IndexPage;
