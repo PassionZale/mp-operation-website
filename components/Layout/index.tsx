@@ -10,10 +10,15 @@ type Props = {
 const Layout = ({ children, title = "甘棠明善" }: Props) => (
   <Fragment>
     <Head>
-      <title>{title} - {BASE_TITLE}</title>
       <meta charSet="utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <title>{title} - {BASE_TITLE}</title>
+
+      <link rel="stylesheet" href="/libs/mobi/mobi.min.css"></link>
+      <link rel="stylesheet" href="/styles/index.css"></link>
     </Head>
+
     {children}
   </Fragment>
 );

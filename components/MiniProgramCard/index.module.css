@@ -1,0 +1,19 @@
+.container {
+  display: inline-block;
+  color: #000;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,.03);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 20px 40px;
+}
+
+.container:hover {
+  transform: scale(1.1);
+}
+
+.logo {
+  width: 170px;
+  height: 106px;
+}

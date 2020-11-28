@@ -23,7 +23,6 @@
       "@constants/*": ["constants/*"],
       "@interface/*": ["interface/*"],
       "@pages/*": ["pages/*"],
-      "@styles/*": ["styles/*"],
       "@utils/*": ["utils/*"],
     }
   },
