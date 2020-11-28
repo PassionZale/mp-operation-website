@@ -3,7 +3,7 @@ import Link from "next/link";
 import styles from "./index.module.css";
 import { Brand } from "@constants/brands.constant";
 
-const MiniProgramCard: React.FC<Brand> = ({id, name, logo}) => (
+const MiniProgramCard: React.FC<Brand> = ({name, logo}) => (
   <Link href={`/miniprogram/${name}`}>
     <div className={`${styles.container} flex-center`}>
       <div className={styles.inner}>
