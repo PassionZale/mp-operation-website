@@ -4,11 +4,11 @@ import { BRANDS } from "@constants/brands.constant";
 
 const IndexPage: React.FC = () => (
   <Layout title="首页">
-    <div className="main flex-center">
+    <div className="main">
       <div className="container-fluid">
         <img src="/images/logo.png" />
 
-        <div className="flex-center top-gap-big">
+        <div className="flex-center" style={{marginTop: 100}}>
           {BRANDS.map((brand) => (
             <div className="unit" key={brand.id}>
               <MiniProgramCard {...brand} />
