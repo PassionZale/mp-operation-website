@@ -21,9 +21,11 @@
     "paths": {
       "@components/*": ["components/*"],
       "@constants/*": ["constants/*"],
-      "@interface/*": ["interface/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@enums/*": ["enums/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"]
     }
   },
   "exclude": ["node_modules"],
