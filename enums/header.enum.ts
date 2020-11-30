@@ -1,4 +1,4 @@
-export const enum Headers {
+export enum Headers {
   Authorization = "Authorization",
   ContentType = "Content-Type",
   ApplicationJson = "application/json",

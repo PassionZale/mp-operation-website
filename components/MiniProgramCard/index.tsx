@@ -3,8 +3,8 @@ import Link from "next/link";
 import styles from "./index.module.css";
 import { Brand } from "@constants/brands.constant";
 
-const MiniProgramCard: React.FC<Brand> = ({name, logo}) => (
-  <Link href={`/miniprogram/${name}`}>
+const MiniProgramCard: React.FC<Brand> = ({id, name, logo}) => (
+  <Link href={`/miniprogram/${id}`}>
     <div className={`${styles.container} flex-center`}>
       <div className={styles.inner}>
         <img className={styles.logo} src={logo}/>
