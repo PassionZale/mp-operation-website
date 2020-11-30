@@ -1,3 +1,3 @@
 export interface IGetPipelinesRequestDto {
-  project_id: string;
+  project_id: number;
 }

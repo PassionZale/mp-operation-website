@@ -1,6 +1,8 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import Layout from "@components/Layout/index";
+import ResponseEmpty from "@components/Response/empty";
+import ResponseError from "@components/Response/error";
 import { getPipelines } from "@services/index";
 import { IPipeline } from "@interfaces/pipeline.interface";
 
@@ -13,14 +15,12 @@ const MiniProgramPage: React.FC<Props> = ({ items, errors }) => {
   if (errors) {
     return (
       <Layout title="Error">
-      <p>
-        <span style={{ color: 'red' }}>Error:</span> {errors}
-      </p>
-    </Layout>
+        <ResponseError message={errors} />
+      </Layout>
     );
   }
 
-  if (items) {
+  if (items && items.length) {
     return (
       <Layout title="小程序">
         {items.map((item) => {
@@ -30,7 +30,11 @@ const MiniProgramPage: React.FC<Props> = ({ items, errors }) => {
     );
   }
 
-  return null
+  return (
+    <Layout title="Empty">
+      <ResponseEmpty message={errors} />
+    </Layout>
+  );
 };
 
 export default MiniProgramPage;
@@ -38,8 +42,9 @@ export default MiniProgramPage;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const id = params?.id as string;
+    const project_id = +id;
 
-    const { data } = await getPipelines({ project_id: id });
+    const { data } = await getPipelines({ project_id });
 
     return { props: { items: data } };
   } catch (error) {
