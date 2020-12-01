@@ -1,9 +1,21 @@
 import React from "react";
 
-class ReleasedLog extends React.Component {
+type Props = {
+  brandId: null | number
+}
+
+type State = {}
+
+class ReleasedLog extends React.Component<Props, State> {
+  constructor(props: Props){
+    super(props)
+  }
+
+  // TODO Watch props.brandId changed
+
   render() {
     return (
-      <div> released log </div>
+      <div> {this.props.brandId} released log </div>
     )
   }
 }

@@ -29,9 +29,7 @@ class MiniProgramPage extends React.Component<Props, State> {
   }
 
   handleBrandSelect(brandId: number) {
-    this.setState({ selectedBrandId: brandId })
-
-    console.log(this.state.selectedBrandId)
+    this.setState({ selectedBrandId: brandId})
   }
 
   render() {
@@ -60,9 +58,9 @@ class MiniProgramPage extends React.Component<Props, State> {
                 minHeight: "100vh",
               }}
             >
-              <BrandPipelineSelect brand={brand} pipelines={pipelines} onSelected={this.handleBrandSelect}/>
+              <BrandPipelineSelect brand={brand} pipelines={pipelines} onSelected={brandId => this.handleBrandSelect(brandId)}/>
 
-              <ReleasedLog/>
+              <ReleasedLog brandId={selectedBrandId} />
             </div>
           </div>
         </Layout>

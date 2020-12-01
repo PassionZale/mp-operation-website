@@ -42,7 +42,9 @@ class BrandPipelineSelect extends React.Component<Props, State> {
           </label>
           <div className="unit">
             <select value={value} onChange={ e => this.handleSelectChange(e) }>
-              <option disabled value="">请选择流水线</option>
+              <option disabled value="">
+                --- 请选择流水线 ---
+              </option>
               {pipelines.map((item) => {
                 return <option key={item.id} value={item.id}>{item.name}</option>;
               })}
