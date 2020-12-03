@@ -3,11 +3,13 @@ import { GetServerSideProps } from "next";
 import Layout from "@components/Layout/index";
 import ResponseEmpty from "@components/Response/empty";
 import ResponseError from "@components/Response/error";
-import { getPipelines } from "@services/index";
+import { getPipelines, getPipelineDeploys } from "@services/index";
 import { IPipeline } from "@interfaces/pipeline.interface";
 import { BRANDS, Brand } from "@constants/brands.constant";
 import BrandPipelineSelect from "@components/BrandPipelineSelect/index";
 import ReleasedLog from "@components/ReleasedLog/index";
+import { IDeploy } from "@interfaces/deploy.interface";
+import axios from "axios"
 
 type Props = {
   brand?: Brand;
@@ -16,7 +18,7 @@ type Props = {
 };
 
 type State = {
-  selectedBrandId: null | number;
+  deploys: IDeploy[]
 };
 
 class MiniProgramPage extends React.Component<Props, State> {
@@ -25,11 +27,21 @@ class MiniProgramPage extends React.Component<Props, State> {
   }
 
   state = {
-    selectedBrandId: null
+    deploys: []
   }
 
-  handleBrandSelect(brandId: number) {
-    this.setState({ selectedBrandId: brandId})
+  async handleBrandSelect(pipelineId: number) {
+    try {
+     const { data } = await getPipelineDeploys(pipelineId)
+
+    //  const res = await fetch(`http://api.mp-operation.lovchun.com/v1/pipeline/${pipelineId}/deploys`)
+
+    // const { data } = await axios.get(`http://api.mp-operation.lovchun.com/v1/pipeline/${pipelineId}/deploys`)
+     
+    //  this.setState({ deploys: data })
+    } catch (error) {
+      window.alert(error.message)
+    }
   }
 
   render() {
@@ -44,7 +56,7 @@ class MiniProgramPage extends React.Component<Props, State> {
     }
 
     if (brand && pipelines && pipelines.length) {
-      const { selectedBrandId } = this.state
+      const { deploys } = this.state
 
       return (
         <Layout title={brand.name}>
@@ -58,9 +70,9 @@ class MiniProgramPage extends React.Component<Props, State> {
                 minHeight: "100vh",
               }}
             >
-              <BrandPipelineSelect brand={brand} pipelines={pipelines} onSelected={brandId => this.handleBrandSelect(brandId)}/>
+              <BrandPipelineSelect brand={brand} pipelines={pipelines} onSelected={pipelineId => this.handleBrandSelect(pipelineId)}/>
 
-              <ReleasedLog brandId={selectedBrandId} />
+              <ReleasedLog deploys={deploys} />
             </div>
           </div>
         </Layout>

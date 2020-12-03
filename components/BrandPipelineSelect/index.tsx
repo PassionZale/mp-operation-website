@@ -7,7 +7,7 @@ type Props = {
 
   pipelines: IPipeline[];
 
-  onSelected: (brandId: number) => void;
+  onSelected: (pipelineId: number) => void;
 };
 
 type State = {

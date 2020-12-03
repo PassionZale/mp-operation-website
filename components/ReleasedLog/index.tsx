@@ -1,7 +1,8 @@
+import { IDeploy } from "@interfaces/deploy.interface";
 import React from "react";
 
 type Props = {
-  brandId: null | number
+  deploys: IDeploy[]
 }
 
 type State = {}
@@ -11,11 +12,9 @@ class ReleasedLog extends React.Component<Props, State> {
     super(props)
   }
 
-  // TODO Watch props.brandId changed
-
   render() {
     return (
-      <div> {this.props.brandId} released log </div>
+      <div> {this.props.deploys} released log </div>
     )
   }
 }

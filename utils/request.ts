@@ -10,7 +10,7 @@ import { IBaseResponse } from "@interfaces/base-response.interface";
 import { Headers } from "@enums/header.enum";
 
 const request: AxiosInstance = axios.create({
-  baseURL: process.env.AXIOS_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_AXIOS_BASE_URL,
   timeout: TIMEOUT,
 });
 
