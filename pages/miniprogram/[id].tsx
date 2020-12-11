@@ -1,51 +1,30 @@
 import React from "react";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 import Layout from "@components/Layout/index";
 import ResponseEmpty from "@components/Response/empty";
 import ResponseError from "@components/Response/error";
+import MiniProgramDeploy from "@components/MiniProgramDeploy/index";
 import { getPipelines, getPipelineDeploys } from "@services/index";
 import { IPipeline } from "@interfaces/pipeline.interface";
 import { BRANDS, Brand } from "@constants/brands.constant";
-import BrandPipelineSelect from "@components/BrandPipelineSelect/index";
-import ReleasedLog from "@components/ReleasedLog/index";
 import { IDeploy } from "@interfaces/deploy.interface";
-import axios from "axios"
 
 type Props = {
   brand?: Brand;
   pipelines?: IPipeline[];
+  deploys?: IDeploy[];
+  pipelineId?: string | number;
   errors?: string;
 };
 
-type State = {
-  deploys: IDeploy[]
-};
-
-class MiniProgramPage extends React.Component<Props, State> {
+class MiniProgramPage extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
 
-  state = {
-    deploys: []
-  }
-
-  async handleBrandSelect(pipelineId: number) {
-    try {
-     const { data } = await getPipelineDeploys(pipelineId)
-
-    //  const res = await fetch(`http://api.mp-operation.lovchun.com/v1/pipeline/${pipelineId}/deploys`)
-
-    // const { data } = await axios.get(`http://api.mp-operation.lovchun.com/v1/pipeline/${pipelineId}/deploys`)
-     
-    //  this.setState({ deploys: data })
-    } catch (error) {
-      window.alert(error.message)
-    }
-  }
-
   render() {
-    const { errors, brand, pipelines } = this.props;
+    const { errors, brand, pipelines, pipelineId, deploys } = this.props;
 
     if (errors) {
       return (
@@ -56,8 +35,6 @@ class MiniProgramPage extends React.Component<Props, State> {
     }
 
     if (brand && pipelines && pipelines.length) {
-      const { deploys } = this.state
-
       return (
         <Layout title={brand.name}>
           <div className="flex-center">
@@ -70,9 +47,26 @@ class MiniProgramPage extends React.Component<Props, State> {
                 minHeight: "100vh",
               }}
             >
-              <BrandPipelineSelect brand={brand} pipelines={pipelines} onSelected={pipelineId => this.handleBrandSelect(pipelineId)}/>
+              {pipelines.map((pipeline) => (
+                <Link
+                  href={`/miniprogram/${brand.id}?pipelineId=${pipeline.id}`}
+                  key={pipeline.id}
+                >
+                  <a
+                    className={`btn ${
+                      pipeline.id == pipelineId ? "btn-primary" : ""
+                    }`}
+                  >
+                    {pipeline.name}
+                  </a>
+                </Link>
+              ))}
 
-              <ReleasedLog deploys={deploys} />
+              <hr />
+
+              {deploys?.map((deploy) => {
+                return <MiniProgramDeploy key={deploy.id} deploy={deploy} />;
+              })}
             </div>
           </div>
         </Layout>
@@ -89,7 +83,10 @@ class MiniProgramPage extends React.Component<Props, State> {
 
 export default MiniProgramPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+}) => {
   try {
     const id = params?.id as string;
     const brandId = +id;
@@ -97,12 +94,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const brand = BRANDS.find((brand) => brand.id === brandId);
 
     if (brand === undefined) {
-      return { props: { items: [] } };
+      return { props: { brand, pipelines: [] } };
     }
 
-    const { data } = await getPipelines({ project_id: brandId });
+    const { data: pipelines } = await getPipelines({ project_id: brandId });
 
-    return { props: { pipelines: data, brand } };
+    if (pipelines && pipelines.length) {
+      const pipelineId = (query?.pipelineId as string) || pipelines[0].id;
+
+      try {
+        const { data: deploys } = await getPipelineDeploys(pipelineId);
+
+        return { props: { brand, pipelines, deploys, pipelineId } };
+      } catch (error) {
+        return { props: { errors: error.message } };
+      }
+    }
+
+    return { props: { brand, pipelines } };
   } catch (error) {
     return { props: { errors: error.message } };
   }

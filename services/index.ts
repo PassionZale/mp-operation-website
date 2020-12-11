@@ -12,7 +12,7 @@ export const getPipelines = async (
 };
 
 export const getPipelineDeploys = async (
-  pipelineId: number
+  pipelineId: string | number
 ): Promise<IGetPipelineDeploysResponseDto> => {
   return request.get(`/pipeline/${pipelineId}/deploys`);
 };
