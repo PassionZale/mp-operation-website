@@ -78,6 +78,7 @@ export default MiniProgramPage;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const id = params?.id as string;
+
     const { data: miniprogram } = await getMiniProgram(id);
 
     return { props: { miniprogram } };
