@@ -15,9 +15,7 @@ const PipelineCard: React.FC<Props> = ({ pipeline }) => (
       <u>{pipeline.name}</u>
     </p>
 
-    <blockquote className="pre-wrap text-small">
-      {pipeline.desc}
-    </blockquote>
+    <blockquote className="pre-wrap text-small">{pipeline.desc}</blockquote>
 
     {pipeline.deploy ? (
       <DelopyLog deploy={pipeline.deploy} />

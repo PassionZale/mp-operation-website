@@ -8,6 +8,6 @@
   max-height: 0;
   border: solid;
   border-width: thin 0 0 0;
-  border-color: rgba(0,0,0,.12);
+  border-color: rgba(0, 0, 0, 0.12);
   transition: inherit;
 }

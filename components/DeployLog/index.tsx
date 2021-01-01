@@ -27,7 +27,9 @@ class DeployLog extends React.Component<Props> {
               <span>Deployed @ {deploy.deployed_at}</span>
             </div>
             <div className="top-gap">
-              <a className="text-primary" title="点击下载" href="#">{deploy.id}.zip</a>
+              <a className="text-primary" title="点击下载" href="#">
+                {deploy.id}.zip
+              </a>
             </div>
           </div>
         </div>
@@ -40,7 +42,6 @@ class DeployLog extends React.Component<Props> {
           </div>
         </div>
       </Fragment>
-
     );
   }
 }

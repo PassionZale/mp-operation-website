@@ -52,7 +52,7 @@ class MiniProgramPage extends React.Component<Props> {
             <p>
               <strong>{miniprogram.name}</strong>
             </p>
-            
+
             <p className="pre-wrap text-small">{miniprogram.desc}</p>
 
             <Divider />
