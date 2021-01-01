@@ -1,21 +1,18 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
+import Error from "next/error";
 import Layout from "@components/Layout/index";
-import ResponseEmpty from "@components/Response/empty";
-import ResponseError from "@components/Response/error";
-import MiniProgramDeploy from "@components/MiniProgramDeploy/index";
-import { getPipelines, getPipelineDeploys } from "@services/index";
+import { getMiniProgram } from "@services/index";
+import { IMiniProgram } from "@interfaces/miniprogram.interface";
+import { IBaseResponse } from "@interfaces/base-response.interface";
 import { IPipeline } from "@interfaces/pipeline.interface";
-import { BRANDS, Brand } from "@constants/brands.constant";
-import { IDeploy } from "@interfaces/deploy.interface";
+import PipelineCard from "@components/PipelineCard";
+import Divider from "@components/Divider";
+import { DEFAULT_EMPTY_MESSAGE } from "@constants/text.constant";
 
 type Props = {
-  brand?: Brand;
-  pipelines?: IPipeline[];
-  deploys?: IDeploy[];
-  pipelineId?: string | number;
-  errors?: string;
+  miniprogram?: IMiniProgram;
+  error?: IBaseResponse;
 };
 
 class MiniProgramPage extends React.Component<Props> {
@@ -24,58 +21,53 @@ class MiniProgramPage extends React.Component<Props> {
   }
 
   render() {
-    const { errors, brand, pipelines, pipelineId, deploys } = this.props;
+    const { miniprogram, error } = this.props;
 
-    if (errors) {
-      return (
-        <Layout title="Error">
-          <ResponseError message={errors} />
-        </Layout>
-      );
+    if (error) {
+      return <Error statusCode={500} title={error.message} />;
     }
 
-    if (brand && pipelines && pipelines.length) {
-      return (
-        <Layout title={brand.name}>
-          <div className="flex-center">
-            <div
-              className="container"
-              style={{
-                background: "#fff",
-                padding: "20px 40px",
-                boxSizing: "border-box",
-                minHeight: "100vh",
-              }}
-            >
-              {pipelines.map((pipeline) => (
-                <Link
-                  href={`/miniprogram/${brand.id}?pipelineId=${pipeline.id}`}
-                  key={pipeline.id}
-                >
-                  <a
-                    className={`btn ${
-                      pipeline.id == pipelineId ? "btn-primary" : ""
-                    }`}
-                  >
-                    {pipeline.name}
-                  </a>
-                </Link>
-              ))}
-
-              <hr />
-
-              {deploys?.map((deploy) => {
-                return <MiniProgramDeploy key={deploy.id} deploy={deploy} />;
-              })}
-            </div>
-          </div>
-        </Layout>
-      );
+    if (!miniprogram) {
+      return <Error statusCode={404} />;
     }
+
+    const { pipelines } = miniprogram;
 
     return (
-      <Layout title="Empty">
-        <ResponseEmpty message={errors} />
+      <Layout title={miniprogram.name}>
+        <div className="flex-center">
+          <div
+            className="container"
+            style={{
+              background: "#fff",
+              padding: "20px 40px",
+              boxSizing: "border-box",
+              minHeight: "100vh",
+            }}
+          >
+            <div className="flex-center">
+              <img className="logo" src={miniprogram.logo} />
+            </div>
+
+            <p>
+              <strong>{miniprogram.name}</strong>
+            </p>
+            
+            <p className="pre-wrap text-small">{miniprogram.desc}</p>
+
+            <Divider />
+
+            {pipelines.length ? (
+              (pipelines as IPipeline[]).map((pipeline) => {
+                return <PipelineCard key={pipeline.id} pipeline={pipeline} />;
+              })
+            ) : (
+              <p className="text-small">
+                <del>{DEFAULT_EMPTY_MESSAGE}</del>
+              </p>
+            )}
+          </div>
+        </div>
       </Layout>
     );
   }
@@ -83,36 +75,13 @@ class MiniProgramPage extends React.Component<Props> {
 
 export default MiniProgramPage;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const id = params?.id as string;
-    const brandId = +id;
+    const { data: miniprogram } = await getMiniProgram(id);
 
-    const brand = BRANDS.find((brand) => brand.id === brandId);
-
-    if (brand === undefined) {
-      return { props: { brand, pipelines: [] } };
-    }
-
-    const { data: pipelines } = await getPipelines({ project_id: brandId });
-
-    if (pipelines && pipelines.length) {
-      const pipelineId = (query?.pipelineId as string) || pipelines[0].id;
-
-      try {
-        const { data: deploys } = await getPipelineDeploys(pipelineId);
-
-        return { props: { brand, pipelines, deploys, pipelineId } };
-      } catch (error) {
-        return { props: { errors: error.message } };
-      }
-    }
-
-    return { props: { brand, pipelines } };
+    return { props: { miniprogram } };
   } catch (error) {
-    return { props: { errors: error.message } };
+    return { props: { error } };
   }
 };

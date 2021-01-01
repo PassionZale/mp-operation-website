@@ -1,3 +1,5 @@
+import { IUser } from "./user.interface";
+
 export interface IDeploy {
   id: string;
   desc: string;
@@ -6,4 +8,5 @@ export interface IDeploy {
   pipeline_id: number;
   user_id: number;
   deployed_at: Date;
+  user: IUser;
 }

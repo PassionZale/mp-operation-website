@@ -1,3 +1,5 @@
+import { IDeploy } from "./deploy.interface";
+
 export interface IPipeline {
   id: number;
 
@@ -16,4 +18,8 @@ export interface IPipeline {
   project_id: number;
 
   user_id: number;
+
+  deploy: null | IDeploy,
+
+  deploys: [] | IDeploy[]
 }

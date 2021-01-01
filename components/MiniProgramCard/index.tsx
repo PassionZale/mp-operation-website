@@ -7,7 +7,7 @@ const MiniProgramCard: React.FC<Brand> = ({id, name, logo}) => (
   <Link href={`/miniprogram/${id}`}>
     <div className={`${styles.container} flex-center`}>
       <div className={styles.inner}>
-        <img className={styles.logo} src={logo}/>
+        <img className="logo" src={logo}/>
         <p className="text-center">{name}</p>
       </div>
     </div>

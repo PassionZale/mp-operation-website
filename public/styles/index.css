@@ -30,3 +30,26 @@ body {
     margin: 0;
   }
 }
+
+.logo {
+  width: 170px;
+  height: 106px;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
+.avatar {
+  height: 25px;
+  min-width: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-flex;
+  line-height: normal;
+  overflow: hidden;
+}
+
+.text-light {
+  color: rgba(0,0,0,.6);
+}
