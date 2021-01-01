@@ -1,8 +1,10 @@
 import { InferGetStaticPropsType } from "next";
+import Error from "next/error";
 import Layout from "@components/Layout/index";
 import MiniProgramCard from "@components/MiniProgramCard/index";
 import { getProjects } from "@services/index";
 import { IProject } from "@interfaces/project.interface";
+import { IBaseResponse } from "@interfaces/base-response.interface";
 
 function chunk<T>(arr: Array<T>, chunkSize: number): Array<Array<T>> {
   return arr.reduce(
@@ -14,7 +16,14 @@ function chunk<T>(arr: Array<T>, chunkSize: number): Array<Array<T>> {
   );
 }
 
-export const getStaticProps = async () => {
+type Props = {
+  props: {
+    projects?: IProject[];
+    error?: IBaseResponse;
+  };
+};
+
+export const getStaticProps = async (): Promise<Props> => {
   try {
     const { data } = await getProjects();
 
@@ -24,33 +33,46 @@ export const getStaticProps = async () => {
       },
     };
   } catch (error) {
-    return { props: { projects: [] } };
+    return { props: { error } };
   }
 };
 
 const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   projects,
+  error,
 }) => {
-  const chunks = chunk<IProject>(projects, 3);
+  if (error) {
+    return <Error statusCode={500} title={error.message} />;
+  }
 
-  return (
-    <Layout title="首页">
-      <div className="main">
-        <div className="container-fluid">
-          <img src="/images/logo.png" />
-          {chunks.map((projects, index) => (
-            <div className="flex-center" style={{ marginTop: 100 }} key={index}>
-              {projects.map((project) => (
-                <div className="unit" key={project.id}>
-                  <MiniProgramCard {...project} />
-                </div>
-              ))}
-            </div>
-          ))}
+  if (projects && projects.length) {
+    const chunks = chunk<IProject>(projects, 3);
+
+    return (
+      <Layout title="首页">
+        <div className="main">
+          <div className="container-fluid">
+            <img src="/images/logo.png" />
+            {chunks.map((projects, index) => (
+              <div
+                className="flex-center"
+                style={{ marginTop: 100 }}
+                key={index}
+              >
+                {projects.map((project) => (
+                  <div className="unit" key={project.id}>
+                    <MiniProgramCard {...project} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </Layout>
-  );
+      </Layout>
+    );
+  } else {
+    return <Error statusCode={404} />;
+  }
 };
 
 export default IndexPage;
