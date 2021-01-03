@@ -21,7 +21,7 @@ const PipelineCard: React.FC<Props> = ({ pipeline }) => (
       <DelopyLog projectId={pipeline.project_id} deploy={pipeline.deploy} />
     ) : (
       <p className="text-small">
-        <del>{DEFAULT_EMPTY_MESSAGE}</del>
+        {DEFAULT_EMPTY_MESSAGE}
       </p>
     )}
 

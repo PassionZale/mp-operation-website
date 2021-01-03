@@ -63,7 +63,7 @@ class MiniProgramPage extends React.Component<Props> {
               })
             ) : (
               <p className="text-small">
-                <del>{DEFAULT_EMPTY_MESSAGE}</del>
+                {DEFAULT_EMPTY_MESSAGE}
               </p>
             )}
           </div>
