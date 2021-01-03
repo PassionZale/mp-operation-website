@@ -19,9 +19,6 @@ const Layout = ({ children, title = "甘棠明善" }: Props) => (
       <title>
         {title} - {BASE_TITLE}
       </title>
-
-      <link rel="stylesheet" href="/libs/mobi/mobi.min.css"></link>
-      <link rel="stylesheet" href="/styles/index.css"></link>
     </Head>
 
     {children}

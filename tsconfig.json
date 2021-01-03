@@ -25,7 +25,8 @@
       "@enums/*": ["enums/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "exclude": ["node_modules"],
