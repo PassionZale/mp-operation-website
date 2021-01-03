@@ -18,7 +18,7 @@ const PipelineCard: React.FC<Props> = ({ pipeline }) => (
     <blockquote className="pre-wrap text-small">{pipeline.desc}</blockquote>
 
     {pipeline.deploy ? (
-      <DelopyLog deploy={pipeline.deploy} />
+      <DelopyLog projectId={pipeline.project_id} deploy={pipeline.deploy} />
     ) : (
       <p className="text-small">
         <del>{DEFAULT_EMPTY_MESSAGE}</del>

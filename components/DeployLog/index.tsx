@@ -1,10 +1,11 @@
 import { IDeploy } from "@interfaces/deploy.interface";
+import Link from "next/link";
 import React, { Fragment } from "react";
 
 type Props = {
+  projectId: number | string;
   deploy: IDeploy;
 };
-
 class DeployLog extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
@@ -12,6 +13,7 @@ class DeployLog extends React.Component<Props> {
 
   render() {
     const { user, ...deploy } = this.props.deploy;
+    const { projectId } = this.props;
 
     return (
       <Fragment>
@@ -27,9 +29,20 @@ class DeployLog extends React.Component<Props> {
               <span>Deployed @ {deploy.deployed_at}</span>
             </div>
             <div className="top-gap">
-              <a className="text-primary" title="点击下载" href="#">
-                {deploy.id}.zip
-              </a>
+              <Link
+                href={{
+                  pathname: "/miniprogram/[id]/download",
+                  query: {
+                    id: projectId,
+                    pipeline_id: deploy.pipeline_id,
+                    deploy_id: deploy.id,
+                  },
+                }}
+              >
+                <a className="text-primary" title="点击下载" target="_blank">
+                  {deploy.id}.zip
+                </a>
+              </Link>
             </div>
           </div>
         </div>
