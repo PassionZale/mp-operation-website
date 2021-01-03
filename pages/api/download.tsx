@@ -1,12 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import request from "request";
+import urlencode from "urlencode";
 
 const handler = (req: NextApiRequest, res: NextApiResponse<Blob>) => {
   const filePath = req.query.filePath as string;
 
-  const fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+  let fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
 
-  res.setHeader("content-disposition", "attachment; filename=" + fileName);
+  fileName = urlencode(fileName, "UTF-8");
+
+  res.setHeader("Content-Disposition", "attachment; filename* = UTF-8''" + fileName);
 
   request
     .get(process.env.REMOTE_URL + filePath)

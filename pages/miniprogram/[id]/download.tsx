@@ -1,16 +1,18 @@
 import { IBaseResponse } from "@interfaces/base-response.interface";
-import { IDeploy } from "@interfaces/deploy.interface";
+import { IDeployDetail } from "@services/dto/response/get-deploy.response.dto";
 import { downloadMiniProgram, getDeploy } from "@services/index";
 import { GetServerSideProps } from "next";
 import Error from "next/error";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
-  deploy?: IDeploy;
+  deploy?: IDeployDetail;
   error?: IBaseResponse;
 };
 
 type State = {
+  isSupportDownload: boolean;
   downloadError: boolean;
   downloadProgress: "unstart" | "started" | "finished";
 };
@@ -20,12 +22,19 @@ class DownloadPage extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      isSupportDownload: true,
       downloadError: false,
       downloadProgress: "unstart",
     };
   }
 
   async componentDidMount() {
+    const isSupportDownload = "download" in document.createElement("a");
+
+    this.setState({ isSupportDownload });
+
+    if (!isSupportDownload) return;
+
     const { deploy } = this.props;
 
     if (deploy) {
@@ -36,24 +45,20 @@ class DownloadPage extends React.Component<Props, State> {
           filePath: deploy.project_path,
         });
 
-        const disposition = response.request.getResponseHeader(
-          "Content-Disposition"
-        );
-
-        let fileName = "";
-        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        const matches = filenameRegex.exec(disposition);
-        if (matches != null && matches[1]) {
-          fileName = matches[1].replace(/['"]/g, "");
-        }
+        const fileName = `${deploy.project.name}-${deploy.pipeline.name}-${deploy.version}-${deploy.id}.zip`;
 
         const blob = new Blob([response.data], { type: "application/zip" });
 
         const downloadUrl = URL.createObjectURL(blob);
+
         const a = document.createElement("a");
+
         a.href = downloadUrl;
+
         a.download = fileName;
+
         document.body.appendChild(a);
+
         a.click();
 
         this.setState({ downloadProgress: "finished" });
@@ -66,7 +71,7 @@ class DownloadPage extends React.Component<Props, State> {
   render() {
     const { error, deploy } = this.props;
 
-    const { downloadError, downloadProgress } = this.state;
+    const { downloadError, downloadProgress, isSupportDownload } = this.state;
 
     if (error) {
       return <Error statusCode={500} title={error.message} />;
@@ -74,6 +79,24 @@ class DownloadPage extends React.Component<Props, State> {
 
     if (!deploy) {
       return <Error statusCode={404} />;
+    }
+
+    if (!isSupportDownload) {
+      return (
+        <p>
+          抱歉，你的浏览器不支持 HTML5 下载，
+          <Link
+            href={{
+              pathname: "/api/download",
+              query: {
+                filePath: deploy.project_path,
+              },
+            }}
+          >
+            <a className="text-primary" href="#">请点击此处手动下载</a>
+          </Link>
+        </p>
+      );
     }
 
     if (downloadError) {
@@ -92,7 +115,7 @@ class DownloadPage extends React.Component<Props, State> {
         break;
 
       default:
-        downloadProgressText = "正在查询源文件，请稍后..."
+        downloadProgressText = "正在查询源文件，请稍后...";
         break;
     }
 
