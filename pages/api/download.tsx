@@ -1,13 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import request from "request";
-import urlencode from "urlencode";
 
 const handler = (req: NextApiRequest, res: NextApiResponse<Blob>) => {
   const filePath = req.query.filePath as string;
 
-  let fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-
-  fileName = urlencode(fileName, "UTF-8");
+  const fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
 
   res.setHeader("Content-Disposition", "attachment; filename* = UTF-8''" + fileName);
 
