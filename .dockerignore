@@ -1,0 +1,35 @@
+README.md
+
+Dockerfile
+.dockerignore
+.vscode
+.git
+dist/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+logs/
+npm-debug.log
+yarn-error.log
+node_modules/
+#package-lock.json
+#yarn.lock
+coverage/
+.idea/
+run/
+.DS_Store
+*.sw*
+*.un~
+typings/
+.nyc_output/
