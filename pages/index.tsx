@@ -1,10 +1,13 @@
 import { InferGetStaticPropsType } from "next";
+import getConfig from "next/config";
 import Error from "next/error";
 import Layout from "@components/Layout/index";
 import MiniProgramCard from "@components/MiniProgramCard/index";
 import { getProjects } from "@services/index";
 import { IProject } from "@interfaces/project.interface";
 import { IBaseResponse } from "@interfaces/base-response.interface";
+
+const { publicRuntimeConfig} = getConfig();
 
 function chunk<T>(arr: Array<T>, chunkSize: number): Array<Array<T>> {
   return arr.reduce(
@@ -52,7 +55,7 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <Layout title="首页">
         <div className="main">
           <div className="container-fluid">
-            <img src="/images/logo.png" />
+            <img src={`${publicRuntimeConfig.basePath}/images/logo.png`} />
             {chunks.map((projects, index) => (
               <div
                 className="flex-center"
