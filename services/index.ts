@@ -1,9 +1,12 @@
+import getConfig from "next/config";
 import request from "@utils/request";
 import { IGetProjectsResponseDto } from "./dto/response/get-projects.response.dto";
 import { IGetMiniProgramResponseDto } from "./dto/response/get-miniprogram.response.dto";
 import { IDownloadMiniProgramRequestDto } from "./dto/request/download-miniprogram.request.dto";
 import { AxiosResponse } from "axios";
 import { IGetDeployResponseDto } from "./dto/response/get-deploy.response.dto";
+
+const { publicRuntimeConfig } = getConfig();
 
 export const getProjects = async (): Promise<IGetProjectsResponseDto> => {
   return request.get("/projects");
@@ -23,7 +26,7 @@ export const downloadMiniProgram = async (
   params: IDownloadMiniProgramRequestDto
 ): Promise<AxiosResponse<Blob>> => {
   return request.get("/api/download", {
-    baseURL: '/',
+    baseURL: publicRuntimeConfig.basePath,
     headers: {
       "Content-Type": "application/json; application/octet-stream",
     },
