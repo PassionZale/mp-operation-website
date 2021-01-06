@@ -1,5 +1,5 @@
 {
-  "name": "gtms-miniprograms",
+  "name": "mp-operation-website",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
