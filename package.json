@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "deploy": "node ./deploy.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
@@ -20,6 +21,9 @@
     "@types/react-dom": "^16.9.4",
     "@types/request": "^2.48.5",
     "@types/urlencode": "^1.1.2",
+    "dotenv": "^8.2.0",
+    "node-cmd": "^4.0.0",
+    "ssh2-sftp-client": "^6.0.1",
     "typescript": "4.0"
   },
   "license": "MIT"
