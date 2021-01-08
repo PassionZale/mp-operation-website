@@ -27,3 +27,6 @@ docker run -itd --name website -p 3000:3000 website
 ```bash
 docker run -itd --name website -p 3000:3000 website
 ```
+
+## TODO
+- 增加 env 配置文件，运行容器时，通过指定 env_file_path 动态注入环境变量
