@@ -55,7 +55,7 @@ const IndexPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <Layout title="首页">
         <div className="main">
           <div className="container-fluid">
-            <img src={`${publicRuntimeConfig.basePath}/images/logo.png`} />
+            <img style={{width: 206, height: 'auto'}} src={`${publicRuntimeConfig.basePath}/images/lzsk.png`} />
             {chunks.map((projects, index) => (
               <div
                 className="flex-center"

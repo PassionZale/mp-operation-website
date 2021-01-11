@@ -1,4 +1,4 @@
-export const BASE_TITLE = "GTMS MiniPrograms ";
+export const BASE_TITLE = "SAAS MiniPrograms ";
 
 export const DEFAULT_SUCCESS_MESSAGE = "操作成功！";
 

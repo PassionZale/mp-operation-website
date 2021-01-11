@@ -1,5 +1,5 @@
 const isProd = process.env.NODE_ENV === 'production'
-const basePath = isProd ? '/gtms' : ''
+const basePath = isProd ? '/saas' : ''
 
 module.exports = {
   basePath,
